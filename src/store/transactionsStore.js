@@ -1,8 +1,12 @@
 import create from 'zustand'
 import axios from 'axios'
 
-export const useTransactionsStore = create((set) => ({
-  transactions: [],
+export const useTransactionsStore = create((set, get) => ({
+  allTransactions: [],
+  lastDayTransactions: [],
+  last3DayTransactions: [],
+  last5DayTransactions: [],
+  lastMonthsTransactions: [],
   setTransactions: (txns) =>
     set((state) => ({
       ...state,
@@ -10,19 +14,81 @@ export const useTransactionsStore = create((set) => ({
     })),
   fetch: async () => {
     try {
+      await get().fetchLastDay()
+      await get().fetchLast3Days()
+      await get().fetchLastMonth()
+    } catch (e) {
+      console.error(e)
+    }
+  },
+  fetchLastDay: async () => {
+    try {
       const { data, status } = await axios.get(
-        'http://localhost:3000/transactions'
+        `${process.env.REACT_APP_URL_PROD}/transactions?timeline=1`
       )
+
       if (!data || status !== 200) {
         throw new Error('GET request failed')
       }
 
       set((state) => ({
         ...state,
-        transactions: data,
+        lastDayTransactions: data,
       }))
+    } catch (e) {
+      console.error(e)
+    }
+  },
+  fetchLast3Days: async () => {
+    try {
+      const { data, status } = await axios.get(
+        `${process.env.REACT_APP_URL_PROD}/transactions?timeline=3`
+      )
 
-      console.log('finished fetch')
+      if (!data || status !== 200) {
+        throw new Error('GET request failed')
+      }
+
+      set((state) => ({
+        ...state,
+        last3DayTransactions: data,
+      }))
+    } catch (e) {
+      console.error(e)
+    }
+  },
+  fetchLastMonth: async () => {
+    try {
+      const { data, status } = await axios.get(
+        `${process.env.REACT_APP_URL_PROD}/transactions?timeline=30`
+      )
+
+      if (!data || status !== 200) {
+        throw new Error('GET request failed')
+      }
+
+      set((state) => ({
+        ...state,
+        lastMonthsTransactions: data,
+      }))
+    } catch (e) {
+      console.error(e)
+    }
+  },
+  fetchAll: async () => {
+    try {
+      const { data, status } = await axios.get(
+        `${process.env.REACT_APP_URL_PROD}/transactions`
+      )
+
+      if (!data || status !== 200) {
+        throw new Error('GET request failed')
+      }
+
+      set((state) => ({
+        ...state,
+        allTransactions: data,
+      }))
     } catch (e) {
       console.error(e)
     }

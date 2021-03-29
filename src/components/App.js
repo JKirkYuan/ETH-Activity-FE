@@ -6,6 +6,7 @@ import { useTransactionsStore } from 'store/transactionsStore'
 import { TransactionHistoryChart } from 'components/HistoryChart/HistoryChart'
 import { SendsChart } from 'components/TransactionAddressChart/SendsChart'
 import { ReceivesChart } from 'components/TransactionAddressChart/ReceivesChart'
+import SearchBar from './SearchBar/SearchBar'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,11 +25,15 @@ function App() {
   React.useEffect(async () => {
     useTransactionsStore.getState().fetch()
   }, [])
+  const [searchTerm, handleSearch] = React.useState('')
 
   const classes = useStyles()
 
   return (
     <div className={classes.root}>
+      <div>
+        <SearchBar handleSearch={handleSearch} />
+      </div>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <TransactionHistoryChart />
