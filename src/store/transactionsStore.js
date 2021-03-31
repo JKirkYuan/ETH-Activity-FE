@@ -7,6 +7,7 @@ export const useTransactionsStore = create((set, get) => ({
   last3DayTransactions: [],
   last5DayTransactions: [],
   lastMonthsTransactions: [],
+  transactionsById: new Map(),
   setTransactions: (txns) =>
     set((state) => ({
       ...state,
@@ -17,6 +18,7 @@ export const useTransactionsStore = create((set, get) => ({
       await get().fetchLastDay()
       await get().fetchLast3Days()
       await get().fetchLastMonth()
+      await get().fetchAll()
     } catch (e) {
       console.error(e)
     }
@@ -24,7 +26,7 @@ export const useTransactionsStore = create((set, get) => ({
   fetchLastDay: async () => {
     try {
       const { data, status } = await axios.get(
-        `${process.env.REACT_APP_URL_PROD}/transactions?timeline=1`
+        `${process.env.REACT_APP_URL_DEV}/transactions?timeline=1`
       )
 
       if (!data || status !== 200) {
@@ -42,7 +44,7 @@ export const useTransactionsStore = create((set, get) => ({
   fetchLast3Days: async () => {
     try {
       const { data, status } = await axios.get(
-        `${process.env.REACT_APP_URL_PROD}/transactions?timeline=3`
+        `${process.env.REACT_APP_URL_DEV}/transactions?timeline=3`
       )
 
       if (!data || status !== 200) {
@@ -60,7 +62,7 @@ export const useTransactionsStore = create((set, get) => ({
   fetchLastMonth: async () => {
     try {
       const { data, status } = await axios.get(
-        `${process.env.REACT_APP_URL_PROD}/transactions?timeline=30`
+        `${process.env.REACT_APP_URL_DEV}/transactions?timeline=30`
       )
 
       if (!data || status !== 200) {
@@ -78,7 +80,7 @@ export const useTransactionsStore = create((set, get) => ({
   fetchAll: async () => {
     try {
       const { data, status } = await axios.get(
-        `${process.env.REACT_APP_URL_PROD}/transactions`
+        `${process.env.REACT_APP_URL_DEV}/transactions`
       )
 
       if (!data || status !== 200) {
@@ -88,6 +90,17 @@ export const useTransactionsStore = create((set, get) => ({
       set((state) => ({
         ...state,
         allTransactions: data,
+      }))
+
+      const txnById = new Map()
+
+      for (let i = 0; i < data.length; i++) {
+        txnById.set(data[i].id, data[i])
+      }
+
+      set((state) => ({
+        ...state,
+        transactionsById: txnById,
       }))
     } catch (e) {
       console.error(e)

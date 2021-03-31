@@ -1,9 +1,10 @@
 import React from 'react'
+import { VictoryBar, VictoryChart, VictoryTheme } from 'victory'
 import Button from '@material-ui/core/Button'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTransactionsStore } from 'store/transactionsStore'
-import { VictoryBar, VictoryChart, VictoryTheme } from 'victory'
+import { top10Receivers } from 'utils/formatTransactions'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -15,29 +16,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const top10Senders = (transactions) => {
-  const hashMap = new Map()
-  const ret = []
-
-  for (let i = 0; i < transactions.length; i++) {
-    const currAddress = transactions[i].addresses[1].hash
-
-    if (hashMap.has(currAddress)) {
-      hashMap.set(currAddress, hashMap.get(currAddress) + 1)
-    } else {
-      hashMap.set(currAddress, 1)
-    }
-  }
-
-  for (const [key, value] of hashMap) {
-    ret.push({ x: key, y: value })
-  }
-
-  return ret.sort((a, b) => b.y - a.y).slice(1, 10)
-}
-
 export const ReceivesChart = () => {
-  const [timeLineSelection, updateTimelineSelection] = React.useState('1 Day')
+  const [timeLineSelection, updateTimelineSelection] = React.useState('3 Days')
 
   const transactions = useTransactionsStore((state) => {
     switch (timeLineSelection) {
@@ -48,9 +28,6 @@ export const ReceivesChart = () => {
       case '1 Month':
         return state.lastMonthsTransactions
       case 'All Time':
-        if (state.allTransactions.length === 0) {
-          state.fetchAll()
-        }
         return state.allTransactions
     }
 
@@ -67,7 +44,7 @@ export const ReceivesChart = () => {
 
   return (
     <div className={classes.container}>
-      <h2>Top 10 Receivers</h2>
+      <h2>Top 10 Receivers in last {timeLineSelection}</h2>
       <ButtonGroup
         aria-label="outlined primary button group"
         className={classes.buttonGroup}
@@ -86,7 +63,7 @@ export const ReceivesChart = () => {
           }}
           labels={({ datum }) => datum.y}
           horizontal
-          data={top10Senders(transactions)}
+          data={top10Receivers(transactions)}
         />
       </VictoryChart>
     </div>

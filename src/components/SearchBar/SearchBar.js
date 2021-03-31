@@ -1,7 +1,7 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField'
 
-const SearchBar = ({ handleSearch }) => {
+export const SearchBar = ({ handleSearch }) => {
   const [searchUrl, searchUrlUpdated] = React.useState('')
   return (
     <form
@@ -22,5 +22,3 @@ const SearchBar = ({ handleSearch }) => {
     </form>
   )
 }
-
-export default SearchBar

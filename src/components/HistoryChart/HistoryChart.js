@@ -1,9 +1,10 @@
 import React from 'react'
+import { VictoryLine, VictoryChart, VictoryTheme } from 'victory'
 import Button from '@material-ui/core/Button'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTransactionsStore } from 'store/transactionsStore'
-import { VictoryLine, VictoryChart, VictoryTheme } from 'victory'
+import { formatTransactions } from 'utils/formatTransactions'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -14,34 +15,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const formatTransactionData = (transactions) => {
-  const hashMap = new Map()
-  const ret = []
-
-  for (let i = 0; i < transactions.length; i++) {
-    const currDate = new Date(transactions[i].txnDate)
-      .toISOString()
-      .slice(0, 10)
-
-    if (hashMap.has(currDate)) {
-      hashMap.set(
-        currDate,
-        hashMap.get(currDate) + parseFloat(transactions[i].eth)
-      )
-    } else {
-      hashMap.set(currDate, parseFloat(transactions[i].eth))
-    }
-  }
-
-  for (const [key, value] of hashMap) {
-    ret.push({ x: key, y: value })
-  }
-
-  return ret
-}
-
 export const TransactionHistoryChart = () => {
-  const [timeLineSelection, updateTimelineSelection] = React.useState('1 Day')
+  const [timeLineSelection, updateTimelineSelection] = React.useState('3 Days')
 
   const transactions = useTransactionsStore((state) => {
     switch (timeLineSelection) {
@@ -52,9 +27,6 @@ export const TransactionHistoryChart = () => {
       case '1 Month':
         return state.lastMonthsTransactions
       case 'All Time':
-        if (state.allTransactions.length === 0) {
-          state.fetchAll()
-        }
         return state.allTransactions
     }
 
@@ -71,7 +43,7 @@ export const TransactionHistoryChart = () => {
 
   return (
     <div className={classes.container}>
-      <h2>Transaction Numbers History</h2>
+      <h2>Transaction Numbers History in last {timeLineSelection}</h2>
       <ButtonGroup
         aria-label="outlined primary button group"
         className={classes.buttonGroup}
@@ -88,7 +60,7 @@ export const TransactionHistoryChart = () => {
             data: { stroke: '#92bfb1' },
             parent: { border: '1px solid #ccc' },
           }}
-          data={formatTransactionData(transactions)}
+          data={formatTransactions(transactions)}
         />
       </VictoryChart>
     </div>
