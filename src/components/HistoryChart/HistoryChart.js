@@ -54,7 +54,7 @@ export const TransactionHistoryChart = () => {
         <Button className={classes.buttonStyle}>1 Month</Button>
         <Button className={classes.buttonStyle}>All Time</Button>
       </ButtonGroup>
-      <VictoryChart theme={VictoryTheme.material} width={1400}>
+      <VictoryChart theme={VictoryTheme.material} width={2000}>
         <VictoryLine
           style={{
             data: { stroke: '#92bfb1' },
