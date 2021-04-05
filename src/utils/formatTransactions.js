@@ -34,15 +34,18 @@ export const formatTransactionsById = (
 
   for (let i = 0; i < transactions.length; i++) {
     const currTxn = transactionsById.get(transactions[i].id)
-    const interactedAddress =
-      currTxn.addresses[0].hash === hash
-        ? currTxn.addresses[1].hash
-        : currTxn.addresses[0].hash
 
-    if (hashMap.has(interactedAddress)) {
-      hashMap.set(interactedAddress, hashMap.get(interactedAddress) + 1)
-    } else {
-      hashMap.set(interactedAddress, 1)
+    if (currTxn) {
+      const interactedAddress =
+        currTxn.addresses[0].hash === hash
+          ? currTxn.addresses[1].hash
+          : currTxn.addresses[0].hash
+
+      if (hashMap.has(interactedAddress)) {
+        hashMap.set(interactedAddress, hashMap.get(interactedAddress) + 1)
+      } else {
+        hashMap.set(interactedAddress, 1)
+      }
     }
   }
 

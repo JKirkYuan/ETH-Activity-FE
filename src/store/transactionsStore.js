@@ -26,7 +26,7 @@ export const useTransactionsStore = create((set, get) => ({
   fetchLastDay: async () => {
     try {
       const { data, status } = await axios.get(
-        `${process.env.REACT_APP_URL_DEV}/transactions?timeline=1`
+        `${process.env.REACT_APP_URL_PROD}/transactions?timeline=1`
       )
 
       if (!data || status !== 200) {
@@ -44,7 +44,7 @@ export const useTransactionsStore = create((set, get) => ({
   fetchLast3Days: async () => {
     try {
       const { data, status } = await axios.get(
-        `${process.env.REACT_APP_URL_DEV}/transactions?timeline=3`
+        `${process.env.REACT_APP_URL_PROD}/transactions?timeline=3`
       )
 
       if (!data || status !== 200) {
@@ -62,7 +62,7 @@ export const useTransactionsStore = create((set, get) => ({
   fetchLastMonth: async () => {
     try {
       const { data, status } = await axios.get(
-        `${process.env.REACT_APP_URL_DEV}/transactions?timeline=30`
+        `${process.env.REACT_APP_URL_PROD}/transactions?timeline=30`
       )
 
       if (!data || status !== 200) {
@@ -80,7 +80,7 @@ export const useTransactionsStore = create((set, get) => ({
   fetchAll: async () => {
     try {
       const { data, status } = await axios.get(
-        `${process.env.REACT_APP_URL_DEV}/transactions`
+        `${process.env.REACT_APP_URL_PROD}/transactions`
       )
 
       if (!data || status !== 200) {

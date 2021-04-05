@@ -7,7 +7,7 @@ export const useAddressStore = create((set, get) => ({
   fetch: async (hash) => {
     try {
       const { data, status } = await axios.get(
-        `${process.env.REACT_APP_URL_DEV}/addresses?hash=${hash}`
+        `${process.env.REACT_APP_URL_PROD}/addresses?hash=${hash}`
       )
 
       if (!data || status !== 200) {
