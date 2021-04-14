@@ -77,7 +77,10 @@ export const AddressHistoryChart = () => {
         <Button className={classes.buttonStyle}>1 Month</Button>
         <Button className={classes.buttonStyle}>All Time</Button>
       </ButtonGroup>
-      <VictoryChart theme={VictoryTheme.material} width={1400}>
+      <VictoryChart
+        theme={VictoryTheme.material}
+        width={timeLineSelection === '1 Month' ? 1800 : 1400}
+      >
         <VictoryLine
           style={{
             data: { stroke: '#92bfb1' },
