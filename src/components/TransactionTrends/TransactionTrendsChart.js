@@ -40,7 +40,7 @@ export const TransactionTrendsChart = () => {
     if (timeLineSelection === '1 Day') {
       updateTransactions([
         ...address.transactions.filter((txn) => {
-          const currDate = new Date()
+          const currDate = new Date('04-04-2021')
           const txnDate = new Date(txn.txnDate)
 
           currDate.setDate(currDate.getDate() - 1)
@@ -55,7 +55,7 @@ export const TransactionTrendsChart = () => {
     } else if (timeLineSelection === '3 Days') {
       updateTransactions([
         ...address.transactions.filter((txn) => {
-          const currDate = new Date()
+          const currDate = new Date('04-04-2021')
           const txnDate = new Date(txn.txnDate)
 
           currDate.setDate(currDate.getDate() - 3)
@@ -70,7 +70,7 @@ export const TransactionTrendsChart = () => {
     } else if (timeLineSelection === '1 Month') {
       updateTransactions([
         ...address.transactions.filter((txn) => {
-          const currDate = new Date()
+          const currDate = new Date('04-04-2021')
           const txnDate = new Date(txn.txnDate)
 
           currDate.setDate(currDate.getDate() - 30)

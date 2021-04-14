@@ -29,7 +29,7 @@ export const AddressHistoryChart = () => {
     if (timeLineSelection === '3 Days') {
       updateTransactions([
         ...address.transactions.filter((txn) => {
-          const currDate = new Date()
+          const currDate = new Date('04-04-2021')
           const txnDate = new Date(txn.txnDate)
 
           currDate.setDate(currDate.getDate() - 3)
@@ -44,7 +44,7 @@ export const AddressHistoryChart = () => {
     } else if (timeLineSelection === '1 Month') {
       updateTransactions([
         ...address.transactions.filter((txn) => {
-          const currDate = new Date()
+          const currDate = new Date('04-04-2021')
           const txnDate = new Date(txn.txnDate)
 
           currDate.setDate(currDate.getDate() - 30)
